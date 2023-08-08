@@ -4,49 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gesture</title>
-    <style>
-        body,html{
-            overflow: hidden;
-            height : 100%;
-            width : 100%;
-            margin:0;
-            padding: 0;
-        }
-        canvas{
-            border: 1px solid #000000;
-            margin-top : 150px;
-            margin-left: 50%;
-            transform: translateX(-50%);
-        }
-        h1{
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            margin: 0;
-        }
-        .reset{
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            left: 80%;
-            top : 40px;
-            border-radius: 3px;
-            background-image: url(reset.svg);
-            background-position: center;
-            background-repeat: no-repeat;
-            user-select:none;
-        }
-        .reset:hover{
-            transform: scale(1.5);
-            transition: 0.5s;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1 class="answer"></h1>
     <div class="reset" onclick="reset()"></div>
-    <canvas class="canvas" width="400" height="400"></canvas>
+    <canvas class="canvas" width="300" height="300"></canvas>
 
     <script src="js/MathsTools.js"></script>
     <script src="js/Samples.js"></script>

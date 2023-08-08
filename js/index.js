@@ -1,11 +1,21 @@
 const Sample_Amount = 15;//采样点的数量
 const Box_Width = 200;//AABB盒目标边长
 
-var startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
-
 var h1 = document.querySelector(".answer");
 var canvas = document.querySelector(".canvas");
 var cxk = canvas.getContext("2d");
+
+var startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
+var canvasOffset = (e) => {
+    console.log(e)
+    let pageX = e.pageX || e.changedTouches[0]["pageX"];
+    let pageY = e.pageY || e.changedTouches[0]["pageY"];
+
+    let offset = new Array(2);
+    offset[1] = pageY - canvas.offsetTop;
+    offset[0] = pageX - canvas.offsetLeft + (canvas.offsetWidth / 2);
+    return offset;
+}//计算点击位置的offset（因为touchEvent没有offset属性）
 
 //1.鼠标画线并记录原始点
 var isMouseDown = false;
@@ -14,7 +24,7 @@ var lastpos;//上一次触发时的位置
 
 let handlemousemove = e => {
     if (!isMouseDown) return;
-    var curpos = [e.offsetX,e.offsetY];
+    var curpos = canvasOffset(e);
     
     cxk.beginPath();
 
@@ -33,16 +43,20 @@ let handlemousemove = e => {
     cxk.fill();
     cxk.stroke();
 
-    lastpos = [e.offsetX,e.offsetY];
+    lastpos = canvasOffset(e);
 }
 
-canvas.onmouseleave = () =>{
+canvas.onmouseleave = () => {
     isMouseDown = false;
 }
+canvas.ontouchleave = () => {
+    isMouseDown = false;
+}
+
 let handleMouseDown = e => {
     isMouseDown = true;
     //初始点记录
-    lastpos = [e.offsetX,e.offsetY];
+    lastpos = canvasOffset(e);
     startPoint.unshift(lastpos)
     //采样点记录
     samplingPoint[0] = lastpos;
@@ -51,7 +65,7 @@ let handleMouseDown = e => {
 let handleMouseUp = e => {
     isMouseDown = false;
     //采样点记录
-    let lastpos = [e.offsetX,e.offsetY];
+    let lastpos = canvasOffset(e);
     startPoint.push(lastpos);
     samplingPoint[Sample_Amount - 1] = lastpos;
     Sampling()
@@ -61,13 +75,13 @@ let reset = () => {
     location = location;
 }
 
+canvas.ontouchstart = e => handleMouseDown(e);//触控
+canvas.ontouchmove = e => handlemousemove(e);
+canvas.ontouchend = e => handleMouseUp(e);
+
 canvas.onmousemove = e => handlemousemove(e);//鼠标
 canvas.onmouseup = e => handleMouseUp(e);
 canvas.onmousedown = e => handleMouseDown(e);
-
-canvas.ontouchstart = e => handleMouseDown(e);
-canvas.ontouchmove = e => handlemousemove(e);
-canvas.ontouchend = e => handleMouseUp(e);
 
 //2.计算采样点
 function Sampling() {
