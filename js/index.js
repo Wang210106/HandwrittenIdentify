@@ -1,21 +1,24 @@
 const Sample_Amount = 15;//采样点的数量
 const Box_Width = 200;//AABB盒目标边长
 
-var h1 = document.querySelector(".answer");
 var canvas = document.querySelector(".canvas");
 var cxk = canvas.getContext("2d");
 
+var q1 = document.querySelector(".q1 div h1"),
+    q2 = document.querySelector(".q2 div h1"),
+    q3 = document.querySelector(".q3 div h1");
+
 var startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
-var canvasOffset = (e) => {
-    console.log(e)
+
+var canvasOffset = (e) => {//计算点击位置的offset（因为touchEvent没有offset属性）
     let pageX = e.pageX || e.changedTouches[0]["pageX"];
     let pageY = e.pageY || e.changedTouches[0]["pageY"];
 
     let offset = new Array(2);
     offset[1] = pageY - canvas.offsetTop;
-    offset[0] = pageX - canvas.offsetLeft + (canvas.offsetWidth / 2);
+    offset[0] = pageX - canvas.offsetLeft;
     return offset;
-}//计算点击位置的offset（因为touchEvent没有offset属性）
+}
 
 //1.鼠标画线并记录原始点
 var isMouseDown = false;
@@ -156,6 +159,7 @@ let multiStroke = null;//多笔字
 function Comparing(points){
     let unitVector = findVectorLength(points);
 
+    //console.log(unitVector)
     let similarity = new Array();//记录结果
     let keys = new Array();
     for (let key in typicalSamples) {
@@ -163,7 +167,7 @@ function Comparing(points){
         keys.push(key)
     }
 
-    var number = keys[similarity.indexOf(Math.max(...similarity))]
+    var number = keys[similarity.indexOf(Math.max(...similarity))]//完结撒花！！
 
     number = multiStroke ? multiStroke : number;
 
@@ -172,8 +176,19 @@ function Comparing(points){
         multiStroke = number.charAt(0)
     }
     else{
-        h1.innerHTML += number.charAt(0);//完结撒花！！！
-
         multiStroke = null;
+    }
+}
+
+function debounce(fn, delay) {
+    let time = null;//time用来控制事件的触发
+    return function () {
+        if (time !== null) {
+            clearTimeout(time);
+        }
+        time = setTimeout(() => {
+            fn.call(this);
+            //利用call(),让this的指针从指向window 转成指向input
+        }, delay)
     }
 }

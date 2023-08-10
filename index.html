@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gesture</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        body,html{
+            overflow: hidden;
+            height: 100%;
+        }
+        canvas{
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
-    <h1 class="answer"></h1>
-    <div class="reset" onclick="reset()"></div>
     <canvas class="canvas" width="300" height="300"></canvas>
 
     <script src="js/MathsTools.js"></script>
