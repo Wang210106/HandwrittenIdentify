@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gesture</title>
+    <title>大人の脑部锻炼</title>
     <style>
         * {
             margin: 0;
             padding: 0;
+            user-select: none;
+        }
+        :root {
+            --canvas-width: 300px;
         }
         li{
             list-style: none;
@@ -16,13 +20,58 @@
             overflow: hidden;
             height: 100%;
         }
-        canvas{
-            background-color: #ddd;
+        .canvas{
+            position: absolute;
+            right: 0;
+            top : calc(50vh - calc(var(--canvas-width) / 2));
+            background-color: RGBA(0,0,0,0);
+        }
+        .container{
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .questions,.answers{
+            position: absolute;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 3rem;
+            text-align: center;
+        }
+        .questions{
+            left: 0;
+            width: 70%;
+        }
+        .answers{
+            right: 0;
+            width: 30%;
+        }
+        .answers li{
+            width: 80px;
+            height: 60px;
+            border-bottom: 5px solid #000;
         }
     </style>
 </head>
 <body>
-    <canvas class="canvas" width="300" height="300"></canvas>
+    <div class="container">
+        <ul class="questions">
+            <li class="q1">1 + 1 =</li>
+            <li class="q2">23 - 1 =</li>
+            <li class="q3">11 * 14 =</li>
+        </ul>
+        <ul class="answers">
+            <li class="a1">2</li>
+            <li class="a2">&emsp;</li>
+            <li class="a3">&emsp;</li>
+        </ul>
+        <canvas class="canvas" width="300" height="300"></canvas>
+    </div>
 
     <script src="js/MathsTools.js"></script>
     <script src="js/Samples.js"></script>

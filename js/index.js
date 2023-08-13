@@ -1,12 +1,17 @@
 const Sample_Amount = 15;//采样点的数量
 const Box_Width = 200;//AABB盒目标边长
 
+//DOM元素
 var canvas = document.querySelector(".canvas");
 var cxk = canvas.getContext("2d");
 
-var q1 = document.querySelector(".q1 div h1"),
-    q2 = document.querySelector(".q2 div h1"),
-    q3 = document.querySelector(".q3 div h1");
+var q1 = document.querySelector(".q1"),
+    q2 = document.querySelector(".q2"),
+    q3 = document.querySelector(".q3");
+
+var a1 = document.querySelector(".a1"),
+    a2 = document.querySelector(".a2"),
+    a3 = document.querySelector(".a3");
 
 var startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
 
@@ -154,12 +159,13 @@ function Normalizating(points){//3.标准化
 }
 
 let multiStroke = null;//多笔字
+let answer = "";//结果
 
 //4.比较
 function Comparing(points){
     let unitVector = findVectorLength(points);
 
-    //console.log(unitVector)
+    console.log(unitVector)
     let similarity = new Array();//记录结果
     let keys = new Array();
     for (let key in typicalSamples) {
@@ -173,22 +179,30 @@ function Comparing(points){
 
     //多笔字检测
     if (number == "5f" || number == "4f"){
-        multiStroke = number.charAt(0)
+        multiStroke = number.charAt(0);
     }
     else{
         multiStroke = null;
+        answer += number.charAt(0);
+        operateDOM();
     }
 }
 
-function debounce(fn, delay) {
+//5.操作DOM
+let operateDOM = debounce(() => {
+    a2.innerHTML = answer;
+    answer = "";
+    canvas.width = canvas.width;
+},800)
+
+function debounce(fn, delay) {//防抖
     let time = null;//time用来控制事件的触发
     return function () {
         if (time !== null) {
             clearTimeout(time);
         }
         time = setTimeout(() => {
-            fn.call(this);
-            //利用call(),让this的指针从指向window 转成指向input
+            fn();
         }, delay)
     }
 }
