@@ -13,9 +13,15 @@ var a1 = document.querySelector(".a1"),
     a2 = document.querySelector(".a2"),
     a3 = document.querySelector(".a3");
 
-var startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
+let thisProblem = new randomProblem();//初始问题
+let nextProblem = new randomProblem();
 
-var canvasOffset = (e) => {//计算点击位置的offset（因为touchEvent没有offset属性）
+q2.innerHTML = thisProblem.problem;
+q3.innerHTML = nextProblem.problem;
+
+let startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
+
+const canvasOffset = (e) => {//计算点击位置的offset（因为touchEvent没有offset属性）
     let pageX = e.pageX || e.changedTouches[0]["pageX"];
     let pageY = e.pageY || e.changedTouches[0]["pageY"];
 
@@ -26,9 +32,9 @@ var canvasOffset = (e) => {//计算点击位置的offset（因为touchEvent没�
 }
 
 //1.鼠标画线并记录原始点
-var isMouseDown = false;
+let isMouseDown = false;
 
-var lastpos;//上一次触发时的位置
+let lastpos;//上一次触发时的位置
 
 let handlemousemove = e => {
     if (!isMouseDown) return;
@@ -165,7 +171,7 @@ let answer = "";//结果
 function Comparing(points){
     let unitVector = findVectorLength(points);
 
-    console.log(unitVector)
+    //console.log(unitVector)
     let similarity = new Array();//记录结果
     let keys = new Array();
     for (let key in typicalSamples) {
@@ -190,6 +196,11 @@ function Comparing(points){
 
 //5.操作DOM
 let operateDOM = debounce(() => {
+    if (isMouseDown){//没输入完
+        operateDOM()
+        return;
+    }
+
     a2.innerHTML = answer;
     answer = "";
     canvas.width = canvas.width;

@@ -88,3 +88,32 @@ const findCosineValue = (v1,v2) => {
 
     return similarity;
 }
+
+//随机出题
+
+function randomProblem(){
+    var operators = ['+', '-', '*'];
+    var operator = operators[Math.floor(Math.random() * operators.length)];
+    var num1 = Math.floor(Math.random() * 100) + 1;
+    var num2 = Math.floor(Math.random() * 100) + 1;
+    
+    // 确保除法操作符不会导致答案大于100
+    if (operator === '/' && num2 > num1) {
+        var temp = num1;
+        num1 = num2;
+        num2 = temp;
+    }
+    
+    var problem = num1 + ' ' + operator + ' ' + num2;
+    var answer = eval(problem);
+    
+    // 如果答案大于100或小于0，则重新生成问题
+    if (answer > 100 || answer < 0) {
+        let nextProblem = new randomProblem();
+        answer = nextProblem.answer;
+        problem = nextProblem.problem;
+    }
+    
+    this.answer = answer;
+    this.problem = problem;
+}
