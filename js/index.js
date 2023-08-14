@@ -16,8 +16,8 @@ var a1 = document.querySelector(".a1"),
 let thisProblem = new randomProblem();//初始问题
 let nextProblem = new randomProblem();
 
-q2.innerHTML = thisProblem.problem;
-q3.innerHTML = nextProblem.problem;
+q2.innerHTML = thisProblem.problem + " =";
+q3.innerHTML = nextProblem.problem + " =";
 
 let startPoint = [],samplingPoint = new Array(Sample_Amount);//初始点集与采样点集
 
@@ -201,12 +201,26 @@ let operateDOM = debounce(() => {
         return;
     }
 
-    a2.innerHTML = answer;
+    a1.style.color = answer == thisProblem.answer ? "green" : "#CC0033";//判断正误
+    moveNext();
     answer = "";
     canvas.width = canvas.width;
 },800)
 
-function debounce(fn, delay) {//防抖
+//把题目往下窜
+function moveNext(){
+    q1.innerHTML = thisProblem.problem + " =";
+    a1.innerHTML = answer;
+
+    thisProblem = nextProblem;
+    nextProblem = new randomProblem();
+
+    q2.innerHTML = thisProblem.problem + " =";
+    q3.innerHTML = nextProblem.problem + " =";
+}
+
+//防抖
+function debounce(fn, delay) {
     let time = null;//time用来控制事件的触发
     return function () {
         if (time !== null) {
